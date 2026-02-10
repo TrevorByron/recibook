@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import Image from "next/image";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -82,7 +82,7 @@ function scaleIngredient(
   return `${formatAmount(scaled)} ${ing.unit} ${ing.name}`;
 }
 
-export default function RecipePage() {
+function RecipePageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const fromRecipesList = searchParams.get("from") === "recipes";
@@ -421,5 +421,13 @@ export default function RecipePage() {
         </AlertDialogContent>
       </AlertDialog>
     </main>
+  );
+}
+
+export default function RecipePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-muted-foreground">Loading…</div>}>
+      <RecipePageContent />
+    </Suspense>
   );
 }

@@ -14,10 +14,11 @@ type PhoneInputProps = Omit<
 };
 
 const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, onChange, ...props }, ref) => {
+  // PhoneInputWithCountry is a class component and doesn't accept HTMLInputElement ref;
+  // ref is accepted for API compatibility but not forwarded to the library.
   return (
     <PhoneInputWithCountry
-      ref={ref}
       className={cn(
         "flex gap-2 rounded-lg border bg-input/30 px-3 py-2 text-base transition-colors",
         "border-input focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px]",
@@ -30,6 +31,7 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
       )}
       defaultCountry="US"
       international
+      onChange={onChange ?? (() => {})}
       {...props}
     />
   );
