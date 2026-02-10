@@ -202,13 +202,12 @@ export default function YourRecipesPage() {
             </p>
             <div className="mt-4 mx-auto w-64 max-w-full">
               <div className="overflow-hidden rounded-2xl shadow-2xl opacity-90">
-                <Image
-                  src="/share_image-348559fa-5c3c-4da7-873a-d26cc280e061.png"
+                <img
+                  src="/share_image-whatsapp.jpg"
                   alt="Example of sharing a recipe link to Recibook on WhatsApp"
                   width={512}
                   height={512}
                   className="w-full h-auto"
-                  sizes="256px"
                 />
               </div>
             </div>

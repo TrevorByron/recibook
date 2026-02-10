@@ -198,7 +198,7 @@ export default function LandingPage() {
                 Don&apos;t have a recipe link handy?
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground mb-4">
-                Swipe through these popular recipes and we&apos;ll pre-fill a WhatsApp message with the link for you.
+                Have a look through these popular recipes and save one for later.
               </p>
               <div className="-mx-4 sm:mx-0 overflow-x-auto pb-3">
               <div className="flex gap-4 sm:gap-6 px-4 sm:px-0 py-2 min-w-max">
