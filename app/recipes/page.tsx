@@ -70,6 +70,8 @@ export default function YourRecipesPage() {
     setRecipes(loadRecipesFromStorage());
   }, []);
 
+  const showWhatsAppEmptyState = recipes.length <= 1;
+
   const filteredRecipes = useMemo(() => {
     return recipes.filter(
       (r) =>
@@ -156,7 +158,11 @@ export default function YourRecipesPage() {
             </p>
           ) : (
             filteredRecipes.map((recipe) => (
-              <Link key={recipe.id} href={`/recipe?id=${encodeURIComponent(recipe.id)}&from=recipes`} className="block">
+              <Link
+                key={recipe.id}
+                href={`/recipe?id=${encodeURIComponent(recipe.id)}&from=recipes`}
+                className="block"
+              >
                 <Card
                   size="sm"
                   className="flex-row items-center gap-3 py-2 px-3 transition-opacity hover:opacity-90 active:shadow-none rounded-xl shadow-md"
@@ -183,6 +189,31 @@ export default function YourRecipesPage() {
             ))
           )}
         </div>
+
+        {showWhatsAppEmptyState && (
+          <div className="mt-6 rounded-xl px-0 py-5 text-center text-sm text-muted-foreground">
+            <p className="font-semibold mb-2 text-[oklch(0.314_0.055_186)]">
+              Nice! you&apos;ve added your first recipe!
+            </p>
+            <p style={{ textAlign: "center" }}>
+              To add more recipes from anywhere else, just share the link to
+              Recibook on WhatsApp, exactly like you would sent it to a friend.
+              We&apos;ll organize it from there.
+            </p>
+            <div className="mt-4 mx-auto w-64 max-w-full">
+              <div className="overflow-hidden rounded-2xl shadow-2xl opacity-90">
+                <Image
+                  src="/share_image-348559fa-5c3c-4da7-873a-d26cc280e061.png"
+                  alt="Example of sharing a recipe link to Recibook on WhatsApp"
+                  width={512}
+                  height={512}
+                  className="w-full h-auto"
+                  sizes="256px"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>

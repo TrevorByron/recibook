@@ -56,60 +56,61 @@ export default function LandingPage() {
     },
   ];
 
+  // Verified Unsplash food images (load via native img to avoid Next.js optimizer issues)
   const popularRecipes: PopularRecipe[] = [
     {
       title: "One-Pan Baked Feta Pasta",
       source: "TikTok classic",
       url: "https://www.example.com/recipes/one-pan-baked-feta-pasta",
-      imageSrc: "https://images.unsplash.com/photo-1525755662778-989d0524087e",
+      imageSrc: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=400&q=80&fit=crop",
     },
     {
       title: "Crispy Parmesan Roast Potatoes",
       source: "Sunday dinner favorite",
       url: "https://www.example.com/recipes/crispy-parmesan-roast-potatoes",
-      imageSrc: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4",
+      imageSrc: "https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=400&q=80&fit=crop",
     },
     {
       title: "Garlic Butter Salmon Bites",
       source: "Quick weeknight dinner",
       url: "https://www.example.com/recipes/garlic-butter-salmon-bites",
-      imageSrc: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c",
+      imageSrc: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=80&fit=crop",
     },
     {
       title: "15-Minute Peanut Noodles",
       source: "Fast & flavorful",
       url: "https://www.example.com/recipes/15-minute-peanut-noodles",
-      imageSrc: "https://images.unsplash.com/photo-1482049016688-2d3e1b311543",
+      imageSrc: "https://images.unsplash.com/photo-1552611052-33e04de081de?w=400&q=80&fit=crop",
     },
     {
       title: "Overnight Baked French Toast",
       source: "Brunch crowd-pleaser",
       url: "https://www.example.com/recipes/overnight-baked-french-toast",
-      imageSrc: "https://images.unsplash.com/photo-1559629819-638a8f7850da",
+      imageSrc: "https://images.unsplash.com/photo-1484723091739-30a097e8f929?w=400&q=80&fit=crop",
     },
     {
       title: "Creamy Tuscan Chicken",
       source: "Comfort food",
       url: "https://www.example.com/recipes/creamy-tuscan-chicken",
-      imageSrc: "https://images.unsplash.com/photo-1615937691194-96f162713e60",
+      imageSrc: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&q=80&fit=crop",
     },
     {
       title: "Sheet-Pan Veggie Tacos",
       source: "Meatless Monday",
       url: "https://www.example.com/recipes/sheet-pan-veggie-tacos",
-      imageSrc: "https://images.unsplash.com/photo-1608038509085-7bb9d5c0d48d",
+      imageSrc: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80&fit=crop",
     },
     {
       title: "No-Bake Chocolate Peanut Butter Bars",
       source: "Easy dessert",
       url: "https://www.example.com/recipes/no-bake-chocolate-peanut-butter-bars",
-      imageSrc: "https://images.unsplash.com/photo-1601972599720-36938d4ecd31",
+      imageSrc: "https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=400&q=80&fit=crop",
     },
     {
       title: "Lemon Garlic Roast Chicken",
       source: "Weekend staple",
       url: "https://www.example.com/recipes/lemon-garlic-roast-chicken",
-      imageSrc: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601",
+      imageSrc: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=400&q=80&fit=crop",
     },
   ];
 
@@ -139,8 +140,8 @@ export default function LandingPage() {
 
         <div className="flex-1 flex flex-col justify-center px-6 sm:px-8 md:px-10 w-full py-20 sm:py-28">
           <div className="max-w-2xl mx-auto w-full text-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[oklch(0.314_0.055_186)] mb-4 sm:mb-5">
-              Save and organize recipes by simply sending them over WhatsApp.
+            <h1 className="text-4xl sm:text-5xl md:text-5xl font-bold tracking-tight text-[oklch(0.314_0.055_186)] mb-4 sm:mb-5">
+              Save recipes from anywhere.
             </h1>
             <p className="text-lg sm:text-xl text-muted-foreground mb-10 sm:mb-12">
               Copy recipes from TikTok, Instagram, Facebook, and Pinterest. Snap photos of handwritten family recipes—we&apos;ll organize everything for you.
@@ -153,7 +154,14 @@ export default function LandingPage() {
                     inputMode="url"
                     placeholder="Paste recipe URL here..."
                     value={url}
-                    onChange={(e) => setUrl(e.target.value)}
+                    onChange={(e) => {
+                      const next = e.target.value;
+                      setUrl(next);
+                      if (selectedPopular && next.trim() !== selectedPopular.url) {
+                        setSelectedPopular(null);
+                        setSelectedPopularUrl(next);
+                      }
+                    }}
                     className="flex-1 min-h-[44px] sm:min-h-0 border-0 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 px-2 sm:px-0"
                     aria-label="Recipe URL"
                   />
@@ -196,6 +204,7 @@ export default function LandingPage() {
               <div className="flex gap-4 sm:gap-6 px-4 sm:px-0 py-2 min-w-max">
                   {popularRecipes.map((recipe) => {
                     const isSelected = selectedPopular?.url === recipe.url;
+                    const isDimmed = selectedPopular && !isSelected;
 
                     return (
                       <button
@@ -204,9 +213,10 @@ export default function LandingPage() {
                         onClick={() => {
                           setSelectedPopular(recipe);
                           setSelectedPopularUrl(recipe.url);
+                          setUrl(recipe.url);
                         }}
                         aria-pressed={isSelected}
-                        className={`group/card relative flex-shrink-0 w-40 sm:w-48 aspect-square rounded-2xl text-left font-semibold transition-opacity hover:opacity-90 active:shadow-none bg-card text-card-foreground ${
+                        className={`group/card relative flex-shrink-0 w-36 sm:w-40 h-28 sm:h-36 rounded-2xl text-left font-semibold transition-opacity hover:opacity-90 active:shadow-none bg-card text-card-foreground ${
                           isSelected
                             ? "ring-4 ring-[oklch(0.568_0.1_186)] shadow-none"
                             : "shadow-md"
@@ -214,15 +224,19 @@ export default function LandingPage() {
                       >
                         <div className="relative h-full w-full overflow-hidden rounded-2xl">
                           {recipe.imageSrc && (
-                            <Image
+                            <img
                               src={recipe.imageSrc}
                               alt={recipe.title}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 640px) 160px, 192px"
+                              className={`absolute inset-0 h-full w-full object-cover transition duration-200 ${
+                                isDimmed ? "grayscale opacity-60" : ""
+                              }`}
                             />
                           )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/5" />
+                          <div
+                            className={`absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/5 transition duration-200 ${
+                              isDimmed ? "opacity-80" : ""
+                            }`}
+                          />
                           <div className="absolute inset-x-0 bottom-0 p-3">
                             <div className="text-[11px] text-white/80 mb-0.5">
                               {recipe.source}
@@ -230,53 +244,11 @@ export default function LandingPage() {
                             <div className="text-sm font-semibold text-white leading-snug">
                               {recipe.title}
                             </div>
-                            <div className="mt-1 text-[11px] text-white/80 flex items-center gap-1">
-                              <span>Tap to send via WhatsApp</span>
-                              <span className="translate-x-0 group-hover/card:translate-x-0.5 transition-transform">
-                                →
-                              </span>
-                            </div>
                           </div>
                         </div>
                       </button>
                     );
                   })}
-                </div>
-              </div>
-
-              <div className="mt-6 space-y-3">
-                <p className="text-sm sm:text-base text-muted-foreground">
-                  {selectedPopular
-                    ? "We’ll send this recipe link to Recibook on WhatsApp."
-                    : "Select a recipe above, or paste a link below to pre-fill your WhatsApp message."}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2 w-full rounded-xl bg-white border border-input p-2 sm:pl-4 sm:pr-2 sm:py-2 min-h-[56px] sm:min-h-[52px] transition-colors shadow-2xl">
-                  <div className="flex items-center flex-1">
-                    <Input
-                      type="url"
-                      inputMode="url"
-                      placeholder="Paste recipe URL here..."
-                      value={selectedPopularUrl}
-                      onChange={(e) => setSelectedPopularUrl(e.target.value)}
-                      className="flex-1 h-[44px] border-0 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 px-2 sm:px-0 truncate"
-                      aria-label="Recipe URL"
-                    />
-                  </div>
-                  <a
-                    href={`https://wa.me/18583199605?text=${encodeURIComponent(
-                      selectedPopularUrl.trim()
-                        ? `I’d like to save this recipe in Recibook: ${selectedPopularUrl.trim()}`
-                        : "I’d like to save a recipe in Recibook."
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 min-h-[44px] sm:min-h-[36px] w-full sm:w-auto [&_svg]:size-5"
-                  >
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                    </svg>
-                    <span>Save via WhatsApp</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -303,42 +275,34 @@ export default function LandingPage() {
               <article key={i} className="flex flex-col">
                 {i === 0 ? (
                   <div className="w-full aspect-[4/3] sm:aspect-video relative rounded-xl overflow-hidden mb-6 sm:mb-8">
-                    <Image
+                    <img
                       src="/recibook-whatsapp-flow.png"
                       alt="Recibook app with recipe collections and WhatsApp conversation showing share-to-Recibook flow"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, 672px"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                   </div>
                 ) : i === 1 ? (
                   <div className="w-full aspect-[4/3] sm:aspect-video relative rounded-xl overflow-hidden mb-6 sm:mb-8">
-                    <Image
+                    <img
                       src="/recibook-collections-screenshot.png"
                       alt="Recibook app showing Dinner, Lunch, and Breakfast recipe collections"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, 672px"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                   </div>
                 ) : i === 2 ? (
                   <div className="w-full aspect-[4/3] sm:aspect-video relative rounded-xl overflow-hidden mb-6 sm:mb-8">
-                    <Image
+                    <img
                       src="/recibook-recipe-detail.png"
                       alt="Recibook recipe detail view with ingredients, steps, and nutrition"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, 672px"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                   </div>
                 ) : i === 3 ? (
                   <div className="w-full aspect-[4/3] sm:aspect-video relative rounded-xl overflow-hidden mb-6 sm:mb-8">
-                    <Image
+                    <img
                       src="/recibook-edit-recipe.png"
                       alt="Recibook edit recipe view: ingredients and steps editing"
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 640px) 100vw, 672px"
+                      className="absolute inset-0 h-full w-full object-cover"
                     />
                   </div>
                 ) : null}
@@ -367,17 +331,36 @@ export default function LandingPage() {
             <br />
             It&apos;s that simple.
           </h3>
-          <a
-            href="https://wa.me/18583199605"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 [&_svg]:size-5"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-            </svg>
-            Message on WhatsApp
-          </a>
+          <div className="w-full max-w-xl">
+            <div className="flex flex-col sm:flex-row gap-2 w-full rounded-xl bg-white border border-input p-2 sm:pl-4 sm:pr-2 sm:py-2 min-h-[56px] sm:min-h-[52px] transition-colors shadow-2xl">
+              <div className="flex items-center flex-1">
+                <Input
+                  type="url"
+                  inputMode="url"
+                  placeholder="Paste recipe URL here..."
+                  value={selectedPopularUrl}
+                  onChange={(e) => setSelectedPopularUrl(e.target.value)}
+                  className="flex-1 h-[44px] border-0 bg-transparent text-base text-foreground placeholder:text-muted-foreground focus-visible:ring-0 focus-visible:ring-offset-0 px-2 sm:px-0 truncate"
+                  aria-label="Recipe URL"
+                />
+              </div>
+              <a
+                href={`https://wa.me/18583199605?text=${encodeURIComponent(
+                  selectedPopularUrl.trim()
+                    ? `I’d like to save this recipe in Recibook: ${selectedPopularUrl.trim()}`
+                    : "I’d like to save a recipe in Recibook."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 min-h-[44px] sm:min-h-[36px] w-full sm:w-auto [&_svg]:size-5"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                <span>Message on WhatsApp</span>
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
 
