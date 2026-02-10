@@ -95,20 +95,29 @@ export default function YourRecipesPage() {
   };
 
   return (
-    <main className="min-h-screen px-4 py-8 bg-gradient-to-b from-[oklch(0.9815_0.009_193.3)] to-[oklch(0.956_0.057_195)]">
-      <div className="max-w-lg mx-auto">
-        <header className="w-full shrink-0 mb-6">
-          <a href="/" className="block w-[100px]" aria-label="Recibook home">
-            <Image
-              src="/recibook-logo-text.png"
-              alt="Recibook"
-              width={100}
-              height={32}
-              className="h-auto w-[100px]"
-            />
-          </a>
+    <main className="min-h-screen flex flex-col">
+      <section className="relative min-h-screen flex flex-col bg-gradient-to-b from-[oklch(0.9815_0.009_193.3)] to-[oklch(0.956_0.057_195)]">
+        <header className="w-full shrink-0">
+          <div className="px-6 sm:px-8 md:px-10 flex items-center justify-between pt-6 sm:pt-8">
+            <a href="/" className="block w-[100px]" aria-label="Recibook home">
+              <Image
+                src="/recibook-logo-text.png"
+                alt="Recibook"
+                width={100}
+                height={32}
+                className="h-auto w-[100px]"
+              />
+            </a>
+            <a
+              href="/"
+              className="inline-flex items-center justify-center rounded-lg border border-white bg-white px-3 py-2 text-sm font-semibold text-primary transition-colors hover:bg-white/90 hover:text-primary shrink-0"
+            >
+              Logout
+            </a>
+          </div>
         </header>
 
+        <div className="max-w-lg mx-auto w-full px-4 pt-6 pb-8">
         <div className="flex items-center justify-between gap-3 mb-4">
           <h1 className="text-2xl sm:text-3xl font-semibold text-[oklch(0.314_0.055_186)]">
             Your recipes
@@ -213,7 +222,8 @@ export default function YourRecipesPage() {
             </div>
           </div>
         )}
-      </div>
+        </div>
+      </section>
 
       <AlertDialog open={modalOpen} onOpenChange={setModalOpen}>
         <AlertDialogContent
