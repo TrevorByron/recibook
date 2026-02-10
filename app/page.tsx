@@ -214,6 +214,10 @@ export default function LandingPage() {
                           setSelectedPopular(recipe);
                           setSelectedPopularUrl(recipe.url);
                           setUrl(recipe.url);
+                          if (typeof sessionStorage !== "undefined") {
+                            sessionStorage.setItem("recibook_pasted_url", recipe.url);
+                          }
+                          router.push("/recipe");
                         }}
                         aria-pressed={isSelected}
                         className={`group/card relative flex-shrink-0 w-36 sm:w-40 h-28 sm:h-36 rounded-2xl text-left font-semibold transition-opacity hover:opacity-90 active:shadow-none bg-card text-card-foreground ${

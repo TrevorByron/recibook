@@ -175,18 +175,16 @@ function RecipePageContent() {
           sizes="100vw"
           priority
         />
-        {fromRecipesList && (
-          <Button
-            type="button"
-            variant="secondary"
-            size="icon"
-            className="absolute left-4 top-[max(0.75rem,env(safe-area-inset-top))] z-10 min-w-[44px] min-h-[44px] rounded-full bg-background/90 shadow-md border-0"
-            onClick={() => router.back()}
-            aria-label="Back to your recipes"
-          >
-            <ArrowLeft className="size-5" />
-          </Button>
-        )}
+        <Button
+          type="button"
+          variant="secondary"
+          size="icon"
+          className="absolute left-4 top-[max(0.75rem,env(safe-area-inset-top))] z-10 min-w-[44px] min-h-[44px] rounded-full bg-background/90 shadow-md border-0"
+          onClick={() => (fromRecipesList ? router.back() : router.push("/"))}
+          aria-label={fromRecipesList ? "Back to your recipes" : "Back to home"}
+        >
+          <ArrowLeft className="size-5" />
+        </Button>
       </div>
 
       <div className="px-4 max-w-lg mx-auto -mt-20 relative z-10">
